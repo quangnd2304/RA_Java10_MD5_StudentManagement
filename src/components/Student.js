@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
+import format from 'date-fns/format';
 
 class Student extends Component {
+
     render() {
+        let { studentInfo, stt } = this.props;
         return (
             <tr>
-                <td>1</td>
-                <td>SV001</td>
-                <td>Nguyễn Văn A</td>
-                <td>20</td>
-                <td>Nam</td>
+                <td>{stt + 1}</td>
+                <td>{studentInfo.studentId}</td>
+                <td>{studentInfo.studentName}</td>
+                <td>{studentInfo.age}</td>
+                <td>{format(new Date(studentInfo.birthDate), "dd/MM/yyyy")}</td>
+                <td>{studentInfo.sex ? "Nam" : "Nữ"}</td>
                 <td>
                     <div className="template-demo">
                         <button
