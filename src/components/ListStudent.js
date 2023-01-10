@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import Student from './Student';
 
 class ListStudent extends Component {
+    handleUpdate = (selectedStudent, actionName) => {
+        this.props.handleAction(actionName, true, selectedStudent);
+    }
     render() {
         // let students = this.props.students;
         let { students } = this.props;
         let elementListStudent = students.map((student, index) => {
-            return <Student key={student.studentId} studentInfo={student} stt={index} />
+            return <Student key={student.studentId} studentInfo={student} stt={index} handleUpdate={this.handleUpdate} />
         })
         return (
             <div className="card-body">

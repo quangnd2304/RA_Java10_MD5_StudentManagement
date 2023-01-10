@@ -24,6 +24,10 @@ class Control extends Component {
         let arr = value.split("-");
         this.props.handleSortProps(arr[0], arr[1]);
     }
+
+    handleCreate = () => {
+        this.props.handleAction("Create", true);
+    }
     render() {
 
         return (
@@ -31,7 +35,7 @@ class Control extends Component {
             <div className="card-header">
                 <div className="row">
                     <div className="col-3">
-                        <button type="button" className="btn btn-primary btn-icon-text">
+                        <button type="button" className="btn btn-primary btn-icon-text" onClick={this.handleCreate}>
                             Thêm mới sinh viên
                         </button>
                     </div>

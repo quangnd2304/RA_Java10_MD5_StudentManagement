@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import format from 'date-fns/format';
 
 class Student extends Component {
-
+    handleUpdate = (selectedStudent) => {
+        this.props.handleUpdate(selectedStudent, "Edit");
+    }
     render() {
         let { studentInfo, stt } = this.props;
         return (
@@ -24,6 +26,7 @@ class Student extends Component {
                         <button
                             type="button"
                             className="btn btn-warning btn-icon-text"
+                            onClick={() => this.handleUpdate(studentInfo)}
                         >
                             Sửa
                         </button>

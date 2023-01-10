@@ -12,12 +12,15 @@ class App extends Component {
     this.state = {
       students: [
         { studentId: "SV001", studentName: "Nguyễn Văn A", age: 20, sex: true, birthDate: "2003-05-18", birthPlace: "HN", address: "Hà Nội" },
-        { studentId: "SV002", studentName: "Nguyễn Văn B", age: 22, sex: false, birthDate: "2001-09-12", birthPlace: "ĐN", address: "Đà Nẵng" },
+        { studentId: "SV002", studentName: "Nguyễn Văn B", age: 22, sex: false, birthDate: "2001-09-12", birthPlace: "DN", address: "Đà Nẵng" },
         { studentId: "SV003", studentName: "Nguyễn Văn C", age: 19, sex: true, birthDate: "2004-01-09", birthPlace: "HCM", address: "Thành phố Hồ Chí Minh" }
       ],
       searchData: "",
       sortDir: "",
-      sortBy: ""
+      sortBy: "",
+      isToggle: false,
+      actionName: '',
+      selectedStudent: {}
     }
   }
   handleSearch = (searchData) => {
@@ -34,6 +37,44 @@ class App extends Component {
       sortBy: sortBy
     })
   }
+
+  handleAction = (actionName, toggle, selectedStudent) => {
+    //Cập nhật vào state
+    if (actionName == "Edit") {
+      this.setState({
+        selectedStudent: selectedStudent
+      })
+    }
+    this.setState({
+      actionName: actionName,
+      isToggle: toggle
+    })
+  }
+
+  handleCreate = (toggle, studentNew) => {
+    // Cập nhật lại isToggle, students
+    this.setState({
+      isToggle: toggle,
+      students: [...this.state.students, studentNew]
+    });
+  }
+
+  handleUpdate = (toggle, studentUpdate) => {
+    //Cập nhật lại toggle và cập nhật thông tin sinh viên cần sửa trong danh sách
+    console.log("student Update-->", studentUpdate);
+    let students = this.state.students.map((student) => {
+      if (student.studentId == studentUpdate.studentId) {
+        return studentUpdate;
+      } else {
+        return student;
+      }
+    });
+    this.setState({
+      isToggle: toggle,
+      students: students
+    })
+  }
+
   render() {
     // Tìm kiếm dữ liệu
     let students = [];
@@ -66,21 +107,26 @@ class App extends Component {
         students.sort((a, b) => b.age - a.age);
       }
     }
+    // toggle form
+    let elementForm = "";
+    if (this.state.isToggle) {
+      elementForm = <Form actionName={this.state.actionName} selectedStudent={this.state.selectedStudent} handleCreate={this.handleCreate} handleUpdate={this.handleUpdate}></Form>;
+    }
     return (
       <div className="App">
         <div className="row">
           <div className="col-lg-7 grid-margin stretch-card">
             <div className="card">
               {/* START CONTROL */}
-              <Control handleSearchProps={this.handleSearch} handleSortProps={this.handleSort}></Control>
+              <Control handleSearchProps={this.handleSearch} handleSortProps={this.handleSort} handleAction={this.handleAction}></Control>
               {/* END CONTROL */}
               {/* START LIST STUDENT */}
-              <ListStudent students={students}></ListStudent>
+              <ListStudent students={students} handleAction={this.handleAction}></ListStudent>
               {/* END LIST STUDENT */}
             </div>
           </div>
           {/* START FORM SINH VIEN */}
-          <Form></Form>
+          {elementForm}
           {/* END FORM SINH VIÊN */}
         </div>
 
